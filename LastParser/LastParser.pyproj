@@ -41,10 +41,10 @@
     <Compile Include="Records\LgnKnwnCrashRecord.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Records\LgnKnwnIncomplete.py">
+    <Compile Include="Records\LgnKnwnIncompleteRecord.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Records\LgnUnknwnComplete.py">
+    <Compile Include="Records\LgnUnknwnCompleteRecord.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Records\Record.py" />

@@ -1,5 +1,6 @@
 import re
-from Records.LgnKnwnIncomplete import LgnKnwnIncompleteRecord
+from Records.LgnKnwnCompleteRecord import LgnKnwnCompleteRecord
+from Records.LgnKnwnIncompleteRecord import LgnKnwnIncompleteRecord
 
 class RegExParser(object):
     """Checks record types and parses them using masks"""
@@ -85,7 +86,7 @@ class RegExParser(object):
         parsedRecord['complete']['duration']['mn'] = duration[1]
 
 
-        return LgnKnwnIncompleteRecord(parsedRecord)
+        return LgnKnwnCompleteRecord(parsedRecord)
     
     
     
