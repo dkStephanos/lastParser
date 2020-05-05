@@ -1,7 +1,12 @@
 import re
 from Records.LgnKnwnCompleteRecord import LgnKnwnCompleteRecord
-from Records.LgnUnknwnCompleteRecord import LgnUnknwnCompleteRecord
+from Records.LgnKnwnCrashRecord import LgnKnwnCrashRecord
 from Records.LgnKnwnIncompleteRecord import LgnKnwnIncompleteRecord
+from Records.LgnUnknwnCompleteRecord import LgnUnknwnCompleteRecord
+from Records.SysCrashRecord import SysCrashRecord
+from Records.SysRebootRecord import SysRebootRecord
+from Records.SysRunLvlChangeRecord import SysRunLvlChangeRecord
+from Records.SysShutDownRecord import SysShutDownRecord
 
 class RegExParser(object):
     """Checks record types and parses them using masks"""
