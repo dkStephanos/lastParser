@@ -1,3 +1,5 @@
+runlevel (to lvl 5)   Fri Feb 24 07:51:35 2017 - Mon Feb 27 07:56:31 2017 (3+00:04)    2.6.32-642.15.1.el6.i686
+shutdown system down  Fri Feb 24 07:51:17 2017 - Fri Feb 24 07:51:35 2017  (00:00)     2.6.32-642.11.1.el6.i686
 phil     pts/11       Sat Oct 29 20:31:13 2016   still logged in                       tn-76-7-147-33.dhcp.embarqhsd.net
 pll      pts/2        Sat Oct 29 20:24:57 2016   still logged in                       ec2-54-186-244-104.us-west-2.compute.amazonaws.com
 daughertyb pts/10       Sat Oct 29 20:18:05 2016   still logged in                       ec2-54-186-244-104.us-west-2.compute.amazonaws.com
