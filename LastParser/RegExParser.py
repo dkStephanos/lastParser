@@ -145,26 +145,54 @@ class RegExParser(object):
         return LgnKnwnCrashRecord(parsedRecord)
 
     def parseSysCrash(record):
-        parsedRecord = {'complete': {'user': '', 'physical-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {}, 'duration': {}, 'user-terminal': ''}}
+        parsedRecord = {'system-crash': {'user': '', 'physical-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {}, 'duration': {}, 'user-terminal': ''}}
         record_arr = record.split()
 
-        parsedRecord['complete']['user'] = record_arr[0]
-        parsedRecord['complete']['physical-terminal'] = record_arr[1]
-        parsedRecord['complete']['start-session']['date']['year'] = record_arr[6]
-        parsedRecord['complete']['start-session']['date']['month'] = record_arr[3]
-        parsedRecord['complete']['start-session']['date']['day'] = record_arr[4]
-        parsedRecord['complete']['start-session']['date']['weekday'] = record_arr[2]
-        parsedRecord['complete']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
-        parsedRecord['complete']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
-        parsedRecord['complete']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
-        parsedRecord['complete']['user-terminal'] = record_arr[10]
+        parsedRecord['system-crash']['user'] = record_arr[0]
+        parsedRecord['system-crash']['physical-terminal'] = record_arr[1]
+        parsedRecord['system-crash']['start-session']['date']['year'] = record_arr[6]
+        parsedRecord['system-crash']['start-session']['date']['month'] = record_arr[3]
+        parsedRecord['system-crash']['start-session']['date']['day'] = record_arr[4]
+        parsedRecord['system-crash']['start-session']['date']['weekday'] = record_arr[2]
+        parsedRecord['system-crash']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
+        parsedRecord['system-crash']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
+        parsedRecord['system-crash']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
+        parsedRecord['system-crash']['user-terminal'] = record_arr[10]
         duration = record_arr[9][1:-1].split(':')
         if duration[0] != '00':
-            parsedRecord['complete']['duration']['hr'] = duration[0]
-        parsedRecord['complete']['duration']['mn'] = duration[1]
+            parsedRecord['system-crash']['duration']['hr'] = duration[0]
+        parsedRecord['system-crash']['duration']['mn'] = duration[1]
 
 
         return SysCrashRecord(parsedRecord)
+
+    def parseSysReboot(record):
+        parsedRecord = {'system-reboot': {'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'duration': {}, 'serial-number': ''}}
+        record_arr = record.split()
+
+
+        parsedRecord['system-reboot']['start-session']['date']['year'] = record_arr[7]
+        parsedRecord['system-reboot']['start-session']['date']['month'] = record_arr[4]
+        parsedRecord['system-reboot']['start-session']['date']['day'] = record_arr[5]
+        parsedRecord['system-reboot']['start-session']['date']['weekday'] = record_arr[3]
+        parsedRecord['system-reboot']['start-session']['time']['hr'] = record_arr[6].split(':')[0]
+        parsedRecord['system-reboot']['start-session']['time']['mn'] = record_arr[6].split(':')[1]
+        parsedRecord['system-reboot']['start-session']['time']['sec'] = record_arr[6].split(':')[2]
+        parsedRecord['system-reboot']['end-session']['date']['year'] = record_arr[13]
+        parsedRecord['system-reboot']['end-session']['date']['month'] = record_arr[10]
+        parsedRecord['system-reboot']['end-session']['date']['day'] = record_arr[11]
+        parsedRecord['system-reboot']['end-session']['date']['weekday'] = record_arr[9]
+        parsedRecord['system-reboot']['end-session']['time']['hr'] = record_arr[12].split(':')[0]
+        parsedRecord['system-reboot']['end-session']['time']['mn'] = record_arr[12].split(':')[1]
+        parsedRecord['system-reboot']['end-session']['time']['sec'] = record_arr[12].split(':')[2]
+        parsedRecord['system-reboot']['serial-number'] = record_arr[15]
+        duration = record_arr[14][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['system-reboot']['duration']['hr'] = duration[0]
+        parsedRecord['system-reboot']['duration']['mn'] = duration[1]
+
+
+        return SysRebootRecord(parsedRecord)
     
     #Dispatch table for record specific parsers
-    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash, 'SysCrash': parseSysCrash}
+    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash, 'SysCrash': parseSysCrash, 'SysReboot': parseSysReboot}
