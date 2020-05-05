@@ -33,17 +33,18 @@ class RegExParser(object):
 
         for record in records:
             type = RegExParser.checkRecord(record)
-            parsed_record = RegExParser.parseRecord(record, type)
-            parsed_records.append(parsed_record)
+            if type != -1:
+                parsed_record = RegExParser.parseRecord(record, type)
+                parsed_records.append(parsed_record)
 
         return parsed_records
 
     def parseLgnKnwnIncomplete(record):
-        parsedRecord = {'incomplete': {'user': '', 'pts-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}, 'remote-terminal': ''}}}
+        parsedRecord = {'incomplete': {'user': '', 'pts-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'remote-terminal': ''}}
         record_arr = record.split()
 
         parsedRecord['incomplete']['user'] = record_arr[0]
-        parsedRecord['incomplete']['pts-terminal'] = record_arr[1]
+        parsedRecord['incomplete']['pts-terminal'] = record_arr[1].split('/')[1]
         parsedRecord['incomplete']['start-session']['date']['year'] = record_arr[6]
         parsedRecord['incomplete']['start-session']['date']['month'] = record_arr[3]
         parsedRecord['incomplete']['start-session']['date']['day'] = record_arr[4]
@@ -51,15 +52,42 @@ class RegExParser(object):
         parsedRecord['incomplete']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
         parsedRecord['incomplete']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
         parsedRecord['incomplete']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
-        parsedRecord['incomplete']['start-session']['remote-terminal'] = record_arr[10]
+        parsedRecord['incomplete']['remote-terminal'] = record_arr[10]
 
 
         return LgnKnwnIncompleteRecord(parsedRecord)
 
     
-    
+    def parseLgnKnwnComplete(record):
+        parsedRecord = {'complete': {'user': '', 'pts-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'duration': {}, 'remote-terminal': ''}}
+        record_arr = record.split()
+
+        parsedRecord['complete']['user'] = record_arr[0]
+        parsedRecord['complete']['pts-terminal'] = record_arr[1].split('/')[1]
+        parsedRecord['complete']['start-session']['date']['year'] = record_arr[6]
+        parsedRecord['complete']['start-session']['date']['month'] = record_arr[3]
+        parsedRecord['complete']['start-session']['date']['day'] = record_arr[4]
+        parsedRecord['complete']['start-session']['date']['weekday'] = record_arr[2]
+        parsedRecord['complete']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
+        parsedRecord['complete']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
+        parsedRecord['complete']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
+        parsedRecord['complete']['end-session']['date']['year'] = record_arr[12]
+        parsedRecord['complete']['end-session']['date']['month'] = record_arr[9]
+        parsedRecord['complete']['end-session']['date']['day'] = record_arr[10]
+        parsedRecord['complete']['end-session']['date']['weekday'] = record_arr[8]
+        parsedRecord['complete']['end-session']['time']['hr'] = record_arr[11].split(':')[0]
+        parsedRecord['complete']['end-session']['time']['mn'] = record_arr[11].split(':')[1]
+        parsedRecord['complete']['end-session']['time']['sec'] = record_arr[11].split(':')[2]
+        parsedRecord['complete']['remote-terminal'] = record_arr[10]
+        duration = record_arr[13][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['complete']['duration']['hr'] = duration[0]
+        parsedRecord['complete']['duration']['mn'] = duration[1]
+
+
+        return LgnKnwnIncompleteRecord(parsedRecord)
     
     
     
     #Dispatch table for record specific parsers
-    record_parsers = {'LgnKnwnIncomplete': parseLgnKnwnIncomplete}
+    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete}
