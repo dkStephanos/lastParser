@@ -1,5 +1,6 @@
 import re
 from Records.LgnKnwnCompleteRecord import LgnKnwnCompleteRecord
+from Records.LgnUnknwnCompleteRecord import LgnUnknwnCompleteRecord
 from Records.LgnKnwnIncompleteRecord import LgnKnwnIncompleteRecord
 
 class RegExParser(object):
@@ -87,8 +88,36 @@ class RegExParser(object):
 
 
         return LgnKnwnCompleteRecord(parsedRecord)
+
+    def parseLgnUnknwnComplete(record):
+        parsedRecord = {'complete': {'user': '', 'pts-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'duration': {}}}
+        record_arr = record.split()
+
+        parsedRecord['complete']['user'] = record_arr[0]
+        parsedRecord['complete']['pts-terminal'] = record_arr[1].split('/')[1]
+        parsedRecord['complete']['start-session']['date']['year'] = record_arr[6]
+        parsedRecord['complete']['start-session']['date']['month'] = record_arr[3]
+        parsedRecord['complete']['start-session']['date']['day'] = record_arr[4]
+        parsedRecord['complete']['start-session']['date']['weekday'] = record_arr[2]
+        parsedRecord['complete']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
+        parsedRecord['complete']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
+        parsedRecord['complete']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
+        parsedRecord['complete']['end-session']['date']['year'] = record_arr[12]
+        parsedRecord['complete']['end-session']['date']['month'] = record_arr[9]
+        parsedRecord['complete']['end-session']['date']['day'] = record_arr[10]
+        parsedRecord['complete']['end-session']['date']['weekday'] = record_arr[8]
+        parsedRecord['complete']['end-session']['time']['hr'] = record_arr[11].split(':')[0]
+        parsedRecord['complete']['end-session']['time']['mn'] = record_arr[11].split(':')[1]
+        parsedRecord['complete']['end-session']['time']['sec'] = record_arr[11].split(':')[2]
+        duration = record_arr[13][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['complete']['duration']['hr'] = duration[0]
+        parsedRecord['complete']['duration']['mn'] = duration[1]
+
+
+        return LgnUnknwnCompleteRecord(parsedRecord)
     
     
     
     #Dispatch table for record specific parsers
-    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete}
+    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete}
