@@ -1,10 +1,10 @@
 from FileHandler import FileHandler
+from DataUtil import DataUtil
 from Records.SysCrashRecord import SysCrashRecord
 
 if __name__ == "__main__":
-    data = FileHandler.openFileFromPath('.\Data\(Windows format) 2016 10 29 valid data.txt')
+    rawData = FileHandler.getContentsOfFile('.\Data\(Windows format) 2016 10 29 valid data.txt')
 
-    print(data.read())
+    records = DataUtil.getRecordsFromRawData(rawData)
 
-    syscrash = SysCrashRecord('Testing')
-    print(syscrash.get_record())
+    print(records[0])

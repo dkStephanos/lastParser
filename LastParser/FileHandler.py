@@ -5,3 +5,10 @@ class FileHandler(object):
         file = open(filepath)
 
         return file
+
+    @staticmethod
+    def getContentsOfFile(filepath):
+        file = open(filepath)
+        data = file.read()
+
+        return data

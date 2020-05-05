@@ -21,12 +21,46 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CLIInterface.py" />
+    <Compile Include="DataUtil.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Encoder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FileHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="JSONEncoder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LastParser.py" />
+    <Compile Include="Records\LgnKnwnCompleteRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\LgnKnwnCrashRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\LgnKnwnIncomplete.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\LgnUnknwnComplete.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Records\Record.py" />
     <Compile Include="Records\SysCrashRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\SysRebootRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\SysRunLvlChangeRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Records\SysShutDownRecord.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RegExParser.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
