@@ -12,3 +12,12 @@ class FileHandler(object):
         data = file.read()
 
         return data
+
+    @staticmethod
+    def writeDataToFile(filepath, data):
+        file = open(filepath, "w+")
+
+        for row in data:
+            file.write(row)
+
+        return 0
