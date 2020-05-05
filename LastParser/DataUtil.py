@@ -4,5 +4,5 @@ class DataUtil(object):
     @staticmethod
     def getRecordsFromRawData(rawData):
         records = rawData.split("\n")
-
-        return records
+        
+        return records[:-2]
