@@ -9,6 +9,6 @@ if __name__ == "__main__":
 
     records = DataUtil.getRecordsFromRawData(rawData)
 
-    records = RegExParser.checkAndParseRecords([records[81]])
+    records = RegExParser.checkAndParseRecords([records[76]])
 
     print(json.dumps(records[0].record))

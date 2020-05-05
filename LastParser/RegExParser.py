@@ -10,7 +10,7 @@ from Records.SysShutDownRecord import SysShutDownRecord
 
 class RegExParser(object):
     """Checks record types and parses them using masks"""
-    regex_masks = {'SysCrash': "[a-z]{0,32}\s*tty[0-9]\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2} - down\s*\([0-9]{0,2}\+?[0-9]{0,2}:[0-9]{2}\)\s*\B:0\.?0?\b",
+    regex_masks = {'SysCrash': "root\s*tty[0-9]\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2} - down\s*\([0-9]{0,2}\+?[0-9]{0,2}:[0-9]{2}\)\s*:0\.?0?",
                    'SysShutDown': "[a-z]{0,32}\s*system down\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2} - (Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2}\s*\([0-9]{0,2}\+?[0-9]{0,2}:[0-9]{2}\)\s*2.6.32-([0-9]{0,3}.){3}el[0-9].i[0-9]{1,3}",
                    'SysReboot': "[a-z]{0,32}\s*system boot\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2} - (Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2}\s*\([0-9]{0,2}\+?[0-9]{0,2}:[0-9]{2}\)\s*2.6.32-([0-9]{0,3}.){3}el[0-9].i[0-9]{1,3}",
                    'SysRunLvlChange': "runlevel \(to lvl [0-9]\)\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2} - (Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} 2(0|1)[0-9]{2}\s*\([0-9]{0,2}\+?[0-9]{0,2}:[0-9]{2}\)\s*2.6.32-([0-9]{0,3}.){3}el[0-9].i[0-9]{1,3}",
@@ -143,6 +143,28 @@ class RegExParser(object):
 
 
         return LgnKnwnCrashRecord(parsedRecord)
+
+    def parseSysCrash(record):
+        parsedRecord = {'complete': {'user': '', 'physical-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {}, 'duration': {}, 'user-terminal': ''}}
+        record_arr = record.split()
+
+        parsedRecord['complete']['user'] = record_arr[0]
+        parsedRecord['complete']['physical-terminal'] = record_arr[1]
+        parsedRecord['complete']['start-session']['date']['year'] = record_arr[6]
+        parsedRecord['complete']['start-session']['date']['month'] = record_arr[3]
+        parsedRecord['complete']['start-session']['date']['day'] = record_arr[4]
+        parsedRecord['complete']['start-session']['date']['weekday'] = record_arr[2]
+        parsedRecord['complete']['start-session']['time']['hr'] = record_arr[5].split(':')[0]
+        parsedRecord['complete']['start-session']['time']['mn'] = record_arr[5].split(':')[1]
+        parsedRecord['complete']['start-session']['time']['sec'] = record_arr[5].split(':')[2]
+        parsedRecord['complete']['user-terminal'] = record_arr[10]
+        duration = record_arr[9][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['complete']['duration']['hr'] = duration[0]
+        parsedRecord['complete']['duration']['mn'] = duration[1]
+
+
+        return SysCrashRecord(parsedRecord)
     
     #Dispatch table for record specific parsers
-    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash}
+    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash, 'SysCrash': parseSysCrash}
