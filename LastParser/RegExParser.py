@@ -27,4 +27,13 @@ class RegExParser(object):
         #return [parsed_record, flags, flagged_rows]
         pass
 
+    @staticmethod
+    def checkAndParseRecords(records):
+        parsed_records = []
 
+        for record in records:
+            type = checkRecord(record)
+            parsed_record = parseRecord(record, type)
+            parsed_records.append(parsed_record)
+
+        return parsed_records
