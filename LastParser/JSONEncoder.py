@@ -3,7 +3,13 @@ from Encoder import Encoder
 
 class JSONEncoder(Encoder):
     
-    def encodeFile(self, parsed_file):
-        return json.dump(parsed_file)
+    @staticmethod
+    def encodeFile(parsed_records):
+        encoded_records = []
+
+        for record in parsed_records:
+            encoded_records.append(json.dumps(record.record))
+
+        return encoded_records
 
 
