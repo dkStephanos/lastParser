@@ -193,6 +193,66 @@ class RegExParser(object):
 
 
         return SysRebootRecord(parsedRecord)
+
+    def parseSysShutDown(record):
+        parsedRecord = {'system-shutdown': {'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'duration': {}, 'serial-number': ''}}
+        record_arr = record.split()
+
+
+        parsedRecord['system-shutdown']['start-session']['date']['year'] = record_arr[7]
+        parsedRecord['system-shutdown']['start-session']['date']['month'] = record_arr[4]
+        parsedRecord['system-shutdown']['start-session']['date']['day'] = record_arr[5]
+        parsedRecord['system-shutdown']['start-session']['date']['weekday'] = record_arr[3]
+        parsedRecord['system-shutdown']['start-session']['time']['hr'] = record_arr[6].split(':')[0]
+        parsedRecord['system-shutdown']['start-session']['time']['mn'] = record_arr[6].split(':')[1]
+        parsedRecord['system-shutdown']['start-session']['time']['sec'] = record_arr[6].split(':')[2]
+        parsedRecord['system-shutdown']['end-session']['date']['year'] = record_arr[13]
+        parsedRecord['system-shutdown']['end-session']['date']['month'] = record_arr[10]
+        parsedRecord['system-shutdown']['end-session']['date']['day'] = record_arr[11]
+        parsedRecord['system-shutdown']['end-session']['date']['weekday'] = record_arr[9]
+        parsedRecord['system-shutdown']['end-session']['time']['hr'] = record_arr[12].split(':')[0]
+        parsedRecord['system-shutdown']['end-session']['time']['mn'] = record_arr[12].split(':')[1]
+        parsedRecord['system-shutdown']['end-session']['time']['sec'] = record_arr[12].split(':')[2]
+        parsedRecord['system-shutdown']['serial-number'] = record_arr[15]
+        duration = record_arr[14][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['system-shutdown']['duration']['hr'] = duration[0]
+        parsedRecord['system-shutdown']['duration']['mn'] = duration[1]
+
+
+        return SysShutDownRecord(parsedRecord)
+
+    def parseSysRunLvlChange(record):
+        parsedRecord = {'runlevel-change': {'level': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'end-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'duration': {}, 'serial-number': ''}}
+        record_arr = record.split()
+
+        parsedRecord['runlevel-change']['level'] = record_arr[3][:-1]
+        parsedRecord['runlevel-change']['start-session']['date']['year'] = record_arr[8]
+        parsedRecord['runlevel-change']['start-session']['date']['month'] = record_arr[5]
+        parsedRecord['runlevel-change']['start-session']['date']['day'] = record_arr[6]
+        parsedRecord['runlevel-change']['start-session']['date']['weekday'] = record_arr[4]
+        parsedRecord['runlevel-change']['start-session']['time']['hr'] = record_arr[7].split(':')[0]
+        parsedRecord['runlevel-change']['start-session']['time']['mn'] = record_arr[7].split(':')[1]
+        parsedRecord['runlevel-change']['start-session']['time']['sec'] = record_arr[7].split(':')[2]
+        parsedRecord['runlevel-change']['end-session']['date']['year'] = record_arr[14]
+        parsedRecord['runlevel-change']['end-session']['date']['month'] = record_arr[11]
+        parsedRecord['runlevel-change']['end-session']['date']['day'] = record_arr[12]
+        parsedRecord['runlevel-change']['end-session']['date']['weekday'] = record_arr[10]
+        parsedRecord['runlevel-change']['end-session']['time']['hr'] = record_arr[13].split(':')[0]
+        parsedRecord['runlevel-change']['end-session']['time']['mn'] = record_arr[13].split(':')[1]
+        parsedRecord['runlevel-change']['end-session']['time']['sec'] = record_arr[13].split(':')[2]
+        parsedRecord['runlevel-change']['serial-number'] = record_arr[16]
+        duration = record_arr[15][1:-1].split(':')
+        if duration[0] != '00':
+            parsedRecord['runlevel-change']['duration']['hr'] = duration[0]
+        parsedRecord['runlevel-change']['duration']['mn'] = duration[1]
+
+
+        return SysRunLvlChangeRecord(parsedRecord)
     
+
+
+
     #Dispatch table for record specific parsers
-    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash, 'SysCrash': parseSysCrash, 'SysReboot': parseSysReboot}
+    record_parsers = {'LgnKnwnComplete': parseLgnKnwnComplete, 'LgnUnknwnComplete': parseLgnUnknwnComplete, 'LgnKnwnIncomplete': parseLgnKnwnIncomplete, 'LgnKnwnCrash': parseLgnKnwnCrash,
+                      'SysCrash': parseSysCrash, 'SysReboot': parseSysReboot, 'SysShutDown': parseSysShutDown, 'SysRunLvlChange': parseSysRunLvlChange}
