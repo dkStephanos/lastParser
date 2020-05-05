@@ -25,10 +25,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LastParser.py" />
-    <Compile Include="Record.py" />
-    <Compile Include="SysCrashRecord.py">
+    <Compile Include="Records\Record.py" />
+    <Compile Include="Records\SysCrashRecord.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Records\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
