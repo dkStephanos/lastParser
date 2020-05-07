@@ -1,9 +1,15 @@
 import sys
+import argparse
 
 class CLIInterface(object):
-    stdin = '.\Data\(Windows format) 2016 10 29 valid data.txt'
-    stdout = './Output/records.txt'
-    stderr = '.\Output\errors.txt'
+    
+    #Constructor takes in std options
+    def __init__(self, stdin, stdout, stderr):
+        self.input_file = stdin
+        self.markup_file = stdout
+        self.error_file = stderr
+        self.suspense_file = stderr
+
 
     #Logs status and code to screen
     @staticmethod
@@ -13,11 +19,12 @@ class CLIInterface(object):
     #Parses args array from user, returning dict of filepaths (using std where appropriate)
     #.\Data\(Windows format) 2016 10 29 valid data.txt is default input file
     def parseArgs(args):
-        settings = {'input_file': ".\Data\(Windows format) 2016 10 29 valid data.txt",
-                    'markup_file': "parsed_output.json", 'error_file': "errors.txt",
-                    'suspense_file': "errors.txt", 'language': 'JSON'}
-        #parse args
+        
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-i')
+        parser.add_argument('-e')
+        parser.add_argument('-s')
+        parser.add_argument('-m')
 
-
-        return settings
+        print(parser.parse_args())
 
