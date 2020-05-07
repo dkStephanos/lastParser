@@ -1,0 +1,1 @@
+         pts/2        Sat Oct 29 15:00:52 2016 - Sat Oct 29 15:49:43 2016  (30:48)     ec2-54-186-244-104.us-west-2.compute.amazonaws.com

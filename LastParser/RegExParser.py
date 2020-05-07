@@ -37,14 +37,20 @@ class RegExParser(object):
     @staticmethod
     def checkAndParseRecords(records):
         parsed_records = []
+        unparsed_records = []
+        errors = []
 
-        for record in records:
-            type = RegExParser.checkRecord(record)
+        for record in range(0, len(records)):
+            type = RegExParser.checkRecord(records[record])
             if type != -1:
-                parsed_record = RegExParser.parseRecord(record, type)
-                parsed_records.append(parsed_record)
+                try:
+                    parsed_record = RegExParser.parseRecord(records[record], type)
+                    parsed_records.append(parsed_record)
+                except:
+                    unparsed_records += records[record]
+                    errors += "Failed to parse record #{0}".format(record)
 
-        return parsed_records
+        return [parsed_records, unparsed_records, errors]
 
     def parseLgnKnwnIncomplete(record):
         parsedRecord = {'incomplete': {'user': '', 'pts-terminal': '', 'start-session': {'date': {'year': '', 'month': '', 'day': '', 'weekday': ''}, 'time': {'hr': '', 'mn': '', 'sec': ''}}, 'remote-terminal': ''}}

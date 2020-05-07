@@ -10,7 +10,7 @@ from ErrorHandler import ErrorHandler
 
 if __name__ == "__main__":
     # Default settings
-    stdin = '.\Data\(Windows hsdfgformat) 2016 10 29 valid data.txt'
+    stdin = '.\Data\(Windows format) 2016 10 29 erroneous data.txt'
     stdout = './Output/parsed_output.json'
     stderr = './Output/errors.txt'
     lang = 'JSON'
@@ -20,9 +20,7 @@ if __name__ == "__main__":
         cli = CLIInterface(stdin, stdout, stderr, lang)
         settings = cli.parseArgs()
 
-    
-        ErrorHandler.verifyInputFile(settings)
-    
+        ErrorHandler.verifyInputFile(settings)    
 
         #Set up concrete encoder options, then instantiate version from settings
         encoders = {'JSON': JSONEncoder, 'XML': XMLEncoder}
@@ -33,7 +31,11 @@ if __name__ == "__main__":
 
         #Get/Check/Parse records from raw data
         records = DataUtil.getRecordsFromRawData(rawData)
-        records = RegExParser.checkAndParseRecords(records)
+        [records, unparsed_records, errors] = RegExParser.checkAndParseRecords(records)
+
+        #Write errors and unparsable records to error/suspense files
+        FileHandler.writeDataToFile(settings['s'], unparsed_records)
+        FileHandler.writeDataToFile(settings['e'], errors)
 
         #Encode records
         encoded_records = encoder.encodeFile(records)
