@@ -5,11 +5,11 @@ class JSONEncoder(Encoder):
     
     @staticmethod
     def encodeFile(parsed_records):
-        encoded_records = []
+        encoded_records = {'sessions': ''}
 
         for record in parsed_records:
-            encoded_records.append(json.dumps(record.record))
+            encoded_records['sessions'] += json.dumps(record.record)
 
-        return encoded_records
+        return json.dumps(encoded_records)
 
 
