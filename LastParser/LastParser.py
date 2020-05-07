@@ -9,6 +9,7 @@ if __name__ == "__main__":
     stdin = '.\Data\(Windows format) 2016 10 29 valid data.txt'
     stdout = './Output/parsed_output.json'
     stderr = './Output/errors.txt'
+    lang = 'JSON'
 
     cli = CLIInterface(stdin, stdout, stderr)
 
