@@ -8,7 +8,7 @@ class JSONEncoder(Encoder):
         encoded_records = {'sessions': ''}
 
         for record in parsed_records:
-            encoded_records['sessions'] += json.dumps(record.record)
+            encoded_records['sessions'] += json.dumps({'session': record.record})
 
         return json.dumps(encoded_records)
 
