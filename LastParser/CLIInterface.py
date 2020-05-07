@@ -28,5 +28,7 @@ class CLIInterface(object):
         parser.add_argument('-m', default=self.markup_file)
         parser.add_argument('-l', default=self.markup_lang)
 
-        print(parser.parse_args())
+        return vars(parser.parse_args())
+
+
 
