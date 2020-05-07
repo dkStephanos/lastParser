@@ -19,8 +19,7 @@ if __name__ == "__main__":
 
     #Set up concrete encoder options, then instantiate version from settings
     encoders = {'JSON': JSONEncoder, 'XML': XMLEncoder}
-    #encoder = encoders[settings['l']]()
-    encoder = XMLEncoder()
+    encoder = encoders[settings['l']]()
 
     #Read in the raw data file settings
     rawData = FileHandler.getContentsOfFile(settings['i'])
