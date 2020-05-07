@@ -9,6 +9,8 @@ if __name__ == "__main__":
     stdout = './Output/records.txt'
     stderr = '.\Output\errors.txt'
 
+    #print(sys.argv)
+
     rawData = FileHandler.getContentsOfFile(stdin)
 
     records = DataUtil.getRecordsFromRawData(rawData)
@@ -16,4 +18,4 @@ if __name__ == "__main__":
 
     encoded_records = JSONEncoder.encodeFile(records)
 
-    FileHandler.writeDataToFile(stdout, encoded_records)
+    FileHandler.writeDataToFile("Output/parsed_output.json", encoded_records)
