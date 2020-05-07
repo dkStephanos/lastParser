@@ -21,3 +21,11 @@ class FileHandler(object):
             file.write(row)
 
         return 0
+
+    @staticmethod
+    def writeLineToFile(filepath, line):
+        file = open(filepath, "w+")
+
+        file.write(line)
+
+        return 0
