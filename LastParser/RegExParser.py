@@ -47,8 +47,11 @@ class RegExParser(object):
                     parsed_record = RegExParser.parseRecord(records[record], type)
                     parsed_records.append(parsed_record)
                 except:
-                    unparsed_records += records[record]
-                    errors += "Failed to parse record #{0}".format(record)
+                    unparsed_records.append(records[record] + '\n')
+                    errors.append("Failed to parse record #{0}\n".format(record))
+            else:
+                unparsed_records.append(records[record] + '\n')
+                errors.append("Failed to identify type for record #{0}\n".format(record))
 
         return [parsed_records, unparsed_records, errors]
 
