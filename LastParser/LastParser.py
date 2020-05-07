@@ -11,9 +11,11 @@ if __name__ == "__main__":
     stderr = './Output/errors.txt'
     lang = 'JSON'
 
-    cli = CLIInterface(stdin, stdout, stderr)
+    encoders = {'JSON': JSONEncoder.encodeFile}
 
-    cli.parseArgs()
+    cli = CLIInterface(stdin, stdout, stderr, lang)
+
+    settings = cli.parseArgs()
 
     #print(sys.argv)
 
@@ -22,6 +24,6 @@ if __name__ == "__main__":
     records = DataUtil.getRecordsFromRawData(rawData)
     records = RegExParser.checkAndParseRecords(records)
 
-    encoded_records = JSONEncoder.encodeFile(records)
+    encoded_records = encoders[settings['l']](records)
 
     FileHandler.writeDataToFile("Output/parsed_output.json", encoded_records)
